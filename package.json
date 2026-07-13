@@ -2,15 +2,21 @@
   "name": "barber",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "dependencies": {
+    "@prisma/adapter-pg": "^7.8.0",
     "@prisma/client": "^7.8.0",
     "next": "14.2.35",
+    "pg": "^8.22.0",
     "prisma": "^7.8.0",
     "react": "^18",
     "react-dom": "^18"
@@ -23,6 +29,8 @@
     "eslint-config-next": "14.2.35",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.23.1",
     "typescript": "^5"
   }
 }
