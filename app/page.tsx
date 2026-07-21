@@ -1,18 +1,20 @@
 import Image from "next/image"
 import { Search } from "lucide-react"
 
-import Header from "@/app/_components/header"
+import BookingItem from "@/app/_components/booking-item"
 import BarbershopItem from "@/app/_components/barbershop-item"
+import Header from "@/app/_components/header"
+
 import { Button } from "@/app/_components/ui/button"
-import { Input } from "@/app/_components/ui/input"
 import { Card, CardContent } from "@/app/_components/ui/card"
-import { Badge } from "@/app/_components/ui/badge"
-import { Avatar, AvatarImage } from "@/app/_components/ui/avatar"
+import { Input } from "@/app/_components/ui/input"
+
+import { quickSearchOptions } from "@/app/_constants/search"
 import { db } from "@/app/_lib/prisma"
 
 const Home = async () => {
-  // Chamar meu banco de dados
   const barbershops = await db.barbershop.findMany()
+
   const popularBarbershops = await db.barbershop.findMany({
     orderBy: {
       name: "desc",
@@ -21,7 +23,6 @@ const Home = async () => {
 
   return (
     <div>
-      {/* Header */}
       <Header />
 
       <main className="p-5">
@@ -43,37 +44,20 @@ const Home = async () => {
           </Button>
         </div>
 
-        {/* BUSCA RÁPIDA */}
-        <div className="[&:: -webkit-scrollbar]:hidden mt-6 flex gap-3 overflow-x-scroll">
-          <Button className="gap-2" variant="secondary">
-            <Image src="/cabelo.svg" width={16} height={16} alt="Cabelo" />
-            Cabelo
-          </Button>
+        {/* Busca rápida */}
+        <div className="mt-6 flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden">
+          {quickSearchOptions.map((option) => (
+            <Button key={option.title} variant="secondary" className="gap-2">
+              <Image
+                src={option.imageUrl}
+                alt={option.title}
+                width={16}
+                height={16}
+              />
 
-          <Button className="gap-2" variant="secondary">
-            <Image src="/barba.svg" width={16} height={16} alt="Barba" />
-            Barba
-          </Button>
-
-          <Button className="gap-2" variant="secondary">
-            <Image
-              src="/acabamento.svg"
-              width={16}
-              height={16}
-              alt="Acabamento"
-            />
-            Acabamento
-          </Button>
-
-          <Button className="gap-2" variant="secondary">
-            <Image
-              src="/sobrancelha.svg"
-              width={16}
-              height={16}
-              alt="Sobrancelha"
-            />
-            Sobrancelha
-          </Button>
+              {option.title}
+            </Button>
+          ))}
         </div>
 
         {/* Banner */}
@@ -87,41 +71,7 @@ const Home = async () => {
           />
         </div>
 
-        {/* Agendamentos */}
-        <section>
-          <h2 className="mb-3 mt-6 text-xs font-bold uppercase text-gray-400">
-            Agendamentos
-          </h2>
-
-          <Card>
-            <CardContent className="flex justify-between p-0">
-              <div className="flex flex-col gap-2 py-5 pl-5">
-                <Badge className="w-fit">Confirmado</Badge>
-
-                <h3 className="font-semibold">Corte de Cabelo</h3>
-
-                <div className="flex items-center gap-2">
-                  <Avatar className="h-6 w-6">
-                    <AvatarImage
-                      src="https://utfs.io/f/c97a2dc9-cf62-468b-a851-bfd2bdde775f-16p.png"
-                      alt="Barbearia ADR"
-                    />
-                  </Avatar>
-
-                  <p className="text-sm">Barbearia ADR</p>
-                </div>
-              </div>
-
-              <div className="flex flex-col items-center justify-center border-l px-5">
-                <p className="text-sm">Julho</p>
-
-                <p className="text-2xl font-bold">16</p>
-
-                <p className="text-sm">17:00</p>
-              </div>
-            </CardContent>
-          </Card>
-        </section>
+        <BookingItem />
 
         {/* Recomendados */}
         <section>
@@ -129,24 +79,28 @@ const Home = async () => {
             Recomendados
           </h2>
 
-          <div className="[&:: -webkit-scrollbar]:hidden flex gap-4 overflow-auto">
+          <div className="flex gap-4 overflow-x-auto [&::-webkit-scrollbar]:hidden">
             {barbershops.map((barbershop) => (
               <BarbershopItem key={barbershop.id} barbershop={barbershop} />
             ))}
           </div>
         </section>
+
+        {/* Populares */}
         <section>
           <h2 className="mb-3 mt-6 text-xs font-bold uppercase text-gray-400">
             Populares
           </h2>
 
-          <div className="[&:: -webkit-scrollbar]:hidden flex gap-4 overflow-auto">
+          <div className="flex gap-4 overflow-x-auto [&::-webkit-scrollbar]:hidden">
             {popularBarbershops.map((barbershop) => (
               <BarbershopItem key={barbershop.id} barbershop={barbershop} />
             ))}
           </div>
         </section>
-        <footer>
+
+        {/* Rodapé */}
+        <footer className="mt-6">
           <Card>
             <CardContent className="px-5 py-6">
               <p className="text-sm text-gray-400">
