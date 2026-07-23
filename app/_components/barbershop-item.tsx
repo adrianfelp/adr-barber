@@ -1,4 +1,5 @@
 import Image from "next/image"
+import Link from "next/link"
 import { StarIcon } from "lucide-react"
 
 import type { Barbershop } from "@/app/generated/prisma/client"
@@ -29,6 +30,7 @@ const BarbershopItem = ({ barbershop }: Props) => {
             className="absolute left-2 top-2 flex items-center gap-1"
           >
             <StarIcon size={12} className="fill-primary text-primary" />
+
             <span className="text-xs font-semibold">5,0</span>
           </Badge>
         </div>
@@ -41,9 +43,11 @@ const BarbershopItem = ({ barbershop }: Props) => {
             {barbershop.address}
           </p>
 
-          <Button variant="secondary" className="mt-3 w-full">
-            Reservar
-          </Button>
+          <Link href={`/barbershops/${barbershop.id}`}>
+            <Button variant="secondary" className="mt-3 w-full">
+              Reservar
+            </Button>
+          </Link>
         </div>
       </CardContent>
     </Card>
