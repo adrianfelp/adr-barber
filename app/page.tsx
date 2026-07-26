@@ -6,7 +6,6 @@ import BarbershopItem from "@/app/_components/barbershop-item"
 import Header from "@/app/_components/header"
 
 import { Button } from "@/app/_components/ui/button"
-import { Card, CardContent } from "@/app/_components/ui/card"
 import { Input } from "@/app/_components/ui/input"
 
 import { quickSearchOptions } from "@/app/_constants/search"
@@ -98,17 +97,6 @@ const Home = async () => {
             ))}
           </div>
         </section>
-
-        {/* Rodapé */}
-        <footer className="mt-6">
-          <Card>
-            <CardContent className="px-5 py-6">
-              <p className="text-sm text-gray-400">
-                © 2026 Copyright <span className="font-bold">ADR Barber</span>
-              </p>
-            </CardContent>
-          </Card>
-        </footer>
       </main>
     </div>
   )
