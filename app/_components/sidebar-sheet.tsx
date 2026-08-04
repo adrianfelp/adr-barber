@@ -1,11 +1,23 @@
+"use client"
+
 import Image from "next/image"
 import Link from "next/link"
+
 import { CalendarIcon, HomeIcon, LogInIcon, MenuIcon } from "lucide-react"
+import { FcGoogle } from "react-icons/fc"
+import { signIn, signOut, useSession } from "next-auth/react"
 
 import { quickSearchOptions } from "@/app/_constants/search"
 
-import { Avatar, AvatarImage } from "@/app/_components/ui/avatar"
 import { Button } from "@/app/_components/ui/button"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/app/_components/ui/dialog"
 import {
   Sheet,
   SheetClose,
@@ -20,6 +32,8 @@ interface SidebarSheetProps {
 }
 
 const SidebarSheet = ({ variant = "outline" }: SidebarSheetProps) => {
+  const { data: session } = useSession()
+
   return (
     <Sheet>
       <SheetTrigger
@@ -36,18 +50,69 @@ const SidebarSheet = ({ variant = "outline" }: SidebarSheetProps) => {
         </SheetHeader>
 
         {/* Usuário */}
-        <div className="flex items-center gap-3 border-b py-5">
-          <Avatar>
-            <AvatarImage
-              src="https://images.unsplash.com/photo-1728577740843-5f29c7586afe?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0"
-              alt="Adrian Felipe"
-            />
-          </Avatar>
+        <div className="border-b py-5">
+          {session?.user ? (
+            <div className="flex items-center gap-3">
+              {session.user.image && (
+                <Image
+                  src={session.user.image}
+                  alt={session.user.name ?? "Usuário"}
+                  width={48}
+                  height={48}
+                  className="rounded-full"
+                />
+              )}
 
-          <div>
-            <p className="font-bold">Adrian Felipe</p>
-            <p className="text-xs text-muted-foreground">adrian@gmail.com</p>
-          </div>
+              <div>
+                <h2 className="font-semibold">{session.user.name}</h2>
+
+                <p className="text-sm text-muted-foreground">
+                  {session.user.email}
+                </p>
+              </div>
+            </div>
+          ) : (
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <h2 className="font-semibold">Olá! Seja bem-vindo.</h2>
+
+                <p className="text-sm text-muted-foreground">
+                  Faça login para agendar serviços e acompanhar seus horários.
+                </p>
+              </div>
+
+              <Dialog>
+                <DialogTrigger
+                  render={
+                    <Button size="icon">
+                      <LogInIcon size={18} />
+                    </Button>
+                  }
+                />
+
+                <DialogContent className="w-[90%] sm:max-w-md">
+                  <DialogHeader>
+                    <DialogTitle>Entrar na ADR Barber</DialogTitle>
+
+                    <DialogDescription>
+                      Faça login com sua conta Google para acessar seus
+                      agendamentos, reservar serviços e acompanhar seu
+                      histórico.
+                    </DialogDescription>
+                  </DialogHeader>
+
+                  <Button
+                    variant="outline"
+                    className="mt-4 w-full gap-2 font-semibold"
+                    onClick={() => signIn("google")}
+                  >
+                    <FcGoogle size={20} />
+                    Continuar com Google
+                  </Button>
+                </DialogContent>
+              </Dialog>
+            </div>
+          )}
         </div>
 
         {/* Navegação */}
@@ -89,10 +154,16 @@ const SidebarSheet = ({ variant = "outline" }: SidebarSheetProps) => {
 
         {/* Conta */}
         <div className="flex flex-col gap-2 py-5">
-          <Button variant="ghost" className="justify-start gap-2">
-            <LogInIcon size={18} />
-            Sair da conta
-          </Button>
+          {session?.user && (
+            <Button
+              variant="ghost"
+              className="justify-start gap-2"
+              onClick={() => signOut()}
+            >
+              <LogInIcon size={18} />
+              Sair da conta
+            </Button>
+          )}
         </div>
       </SheetContent>
     </Sheet>
