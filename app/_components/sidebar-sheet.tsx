@@ -132,23 +132,29 @@ const SidebarSheet = ({ variant = "outline" }: SidebarSheetProps) => {
           </Button>
         </div>
 
-        {/* Busca rápida */}
+        {/* Serviços */}
         <div className="flex flex-col gap-2 border-b py-5">
           {quickSearchOptions.map((option) => (
-            <Button
+            <SheetClose
               key={option.title}
-              variant="ghost"
-              className="justify-start gap-2"
+              render={
+                <Button variant="ghost" className="justify-start gap-2" />
+              }
             >
-              <Image
-                src={option.imageUrl}
-                alt={option.title}
-                width={18}
-                height={18}
-              />
+              <Link
+                href={`/barbershops?service=${encodeURIComponent(option.title)}`}
+                className="flex items-center gap-2"
+              >
+                <Image
+                  src={option.imageUrl}
+                  alt={option.title}
+                  width={18}
+                  height={18}
+                />
 
-              {option.title}
-            </Button>
+                {option.title}
+              </Link>
+            </SheetClose>
           ))}
         </div>
 

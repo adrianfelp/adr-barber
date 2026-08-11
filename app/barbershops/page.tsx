@@ -6,18 +6,43 @@ import { db } from "@/app/_lib/prisma"
 interface BarbershopsPageProps {
   searchParams: {
     search?: string
+    service?: string
   }
 }
 
 const BarbershopsPage = async ({ searchParams }: BarbershopsPageProps) => {
   const barbershops = await db.barbershop.findMany({
     where: {
-      name: {
-        contains: searchParams.search,
-        mode: "insensitive",
-      },
+      AND: [
+        searchParams.search
+          ? {
+              name: {
+                contains: searchParams.search,
+                mode: "insensitive",
+              },
+            }
+          : {},
+        searchParams.service
+          ? {
+              services: {
+                some: {
+                  name: {
+                    contains: searchParams.service,
+                    mode: "insensitive",
+                  },
+                },
+              },
+            }
+          : {},
+      ],
     },
   })
+
+  const title = searchParams.service
+    ? `Barbearias com serviço "${searchParams.service}"`
+    : searchParams.search
+      ? `Resultados para "${searchParams.search}"`
+      : "Todas as barbearias"
 
   return (
     <div>
@@ -29,7 +54,7 @@ const BarbershopsPage = async ({ searchParams }: BarbershopsPageProps) => {
 
       <div className="px-5">
         <h2 className="mb-3 mt-6 text-xs font-bold uppercase text-gray-400">
-          Resultados para &quot;{searchParams.search}&quot;
+          {title}
         </h2>
 
         <div className="grid grid-cols-2 gap-4">
