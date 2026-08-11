@@ -1,12 +1,11 @@
 import Image from "next/image"
-import { Search } from "lucide-react"
 
 import BookingItem from "@/app/_components/booking-item"
 import BarbershopItem from "@/app/_components/barbershop-item"
 import Header from "@/app/_components/header"
+import Search from "@/app/_components/search"
 
 import { Button } from "@/app/_components/ui/button"
-import { Input } from "@/app/_components/ui/input"
 
 import { quickSearchOptions } from "@/app/_constants/search"
 import { db } from "@/app/_lib/prisma"
@@ -35,12 +34,8 @@ const Home = async () => {
         </section>
 
         {/* Busca */}
-        <div className="mt-6 flex items-center gap-2">
-          <Input placeholder="Faça sua busca..." className="flex-1" />
-
-          <Button size="icon" aria-label="Buscar">
-            <Search className="h-5 w-5" />
-          </Button>
+        <div className="mt-6">
+          <Search />
         </div>
 
         {/* Busca rápida */}
