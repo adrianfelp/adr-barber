@@ -16,6 +16,25 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
 
+  // Adiciona o ID do usuário à sessão
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id
+      }
+
+      return token
+    },
+
+    async session({ session, token }) {
+      if (session.user && token.id) {
+        session.user.id = token.id
+      }
+
+      return session
+    },
+  },
+
   // Página de login personalizada
   pages: {
     signIn: "/",

@@ -95,7 +95,11 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
 
         <div className="space-y-4">
           {barbershop.services.map((service) => (
-            <ServiceItem key={service.id} service={service} />
+            <ServiceItem
+              key={service.id}
+              barbershop={barbershop}
+              service={service}
+            />
           ))}
         </div>
       </div>

@@ -2,20 +2,14 @@
 
 import Image from "next/image"
 import Link from "next/link"
-
 import { CalendarIcon, HomeIcon, LogInIcon, MenuIcon } from "lucide-react"
-import { FcGoogle } from "react-icons/fc"
-import { signIn, signOut, useSession } from "next-auth/react"
+import { signOut, useSession } from "next-auth/react"
 
-import { quickSearchOptions } from "@/app/_constants/search"
-
+import SignInDialog from "@/app/_components/sign-in-dialog"
 import { Button } from "@/app/_components/ui/button"
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "@/app/_components/ui/dialog"
 import {
@@ -26,6 +20,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/app/_components/ui/sheet"
+import { quickSearchOptions } from "@/app/_constants/search"
 
 interface SidebarSheetProps {
   variant?: "default" | "secondary" | "outline" | "ghost"
@@ -63,10 +58,10 @@ const SidebarSheet = ({ variant = "outline" }: SidebarSheetProps) => {
                 />
               )}
 
-              <div>
-                <h2 className="font-semibold">{session.user.name}</h2>
+              <div className="min-w-0">
+                <h2 className="truncate font-semibold">{session.user.name}</h2>
 
-                <p className="text-sm text-muted-foreground">
+                <p className="truncate text-sm text-muted-foreground">
                   {session.user.email}
                 </p>
               </div>
@@ -91,24 +86,7 @@ const SidebarSheet = ({ variant = "outline" }: SidebarSheetProps) => {
                 />
 
                 <DialogContent className="w-[90%] sm:max-w-md">
-                  <DialogHeader>
-                    <DialogTitle>Entrar na ADR Barber</DialogTitle>
-
-                    <DialogDescription>
-                      Faça login com sua conta Google para acessar seus
-                      agendamentos, reservar serviços e acompanhar seu
-                      histórico.
-                    </DialogDescription>
-                  </DialogHeader>
-
-                  <Button
-                    variant="outline"
-                    className="mt-4 w-full gap-2 font-semibold"
-                    onClick={() => signIn("google")}
-                  >
-                    <FcGoogle size={20} />
-                    Continuar com Google
-                  </Button>
+                  <SignInDialog />
                 </DialogContent>
               </Dialog>
             </div>
@@ -126,10 +104,14 @@ const SidebarSheet = ({ variant = "outline" }: SidebarSheetProps) => {
             </Link>
           </SheetClose>
 
-          <Button variant="ghost" className="justify-start gap-2">
-            <CalendarIcon size={18} />
-            Agendamentos
-          </Button>
+          <SheetClose
+            render={<Button variant="ghost" className="justify-start gap-2" />}
+          >
+            <Link href="/bookings" className="flex items-center gap-2">
+              <CalendarIcon size={18} />
+              Agendamentos
+            </Link>
+          </SheetClose>
         </div>
 
         {/* Serviços */}
@@ -159,8 +141,8 @@ const SidebarSheet = ({ variant = "outline" }: SidebarSheetProps) => {
         </div>
 
         {/* Conta */}
-        <div className="flex flex-col gap-2 py-5">
-          {session?.user && (
+        {session?.user && (
+          <div className="flex flex-col gap-2 py-5">
             <Button
               variant="ghost"
               className="justify-start gap-2"
@@ -169,8 +151,8 @@ const SidebarSheet = ({ variant = "outline" }: SidebarSheetProps) => {
               <LogInIcon size={18} />
               Sair da conta
             </Button>
-          )}
-        </div>
+          </div>
+        )}
       </SheetContent>
     </Sheet>
   )

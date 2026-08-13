@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import localFont from "next/font/local"
+import { Toaster } from "sonner"
 
 import "./globals.css"
 
@@ -36,6 +37,8 @@ export default function RootLayout({
         <Providers>{children}</Providers>
 
         <Footer />
+
+        <Toaster position="bottom-center" richColors closeButton />
       </body>
     </html>
   )
