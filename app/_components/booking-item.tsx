@@ -84,9 +84,9 @@ const BookingItem = ({ booking }: BookingItemProps) => {
       >
         <CardContent className="flex justify-between p-0">
           {/* Esquerda */}
-          <div className="flex flex-col gap-2 py-5 pl-5">
+          <div className="flex min-w-0 flex-col gap-2 py-5 pl-5">
             <Badge
-              className="w-fit"
+              className="w-fit rounded-full px-3"
               variant={isConfirmed ? "default" : "secondary"}
             >
               {isConfirmed ? "Confirmado" : "Finalizado"}
@@ -99,12 +99,12 @@ const BookingItem = ({ booking }: BookingItemProps) => {
                 <AvatarImage src={barbershop.imageUrl} alt={barbershop.name} />
               </Avatar>
 
-              <p className="text-sm">{barbershop.name}</p>
+              <p className="truncate text-sm">{barbershop.name}</p>
             </div>
           </div>
 
           {/* Direita */}
-          <div className="flex flex-col items-center justify-center border-l-2 px-5">
+          <div className="flex shrink-0 flex-col items-center justify-center border-l-2 px-5">
             <p className="text-sm capitalize">
               {format(booking.date, "MMMM", {
                 locale: ptBR,
@@ -127,7 +127,7 @@ const BookingItem = ({ booking }: BookingItemProps) => {
       </SheetTrigger>
 
       {/* Detalhes do agendamento */}
-      <SheetContent className="w-[85%] overflow-y-auto">
+      <SheetContent className="w-[85%] overflow-y-auto overflow-x-hidden">
         <SheetHeader>
           <SheetTitle className="text-left">Informações da Reserva</SheetTitle>
         </SheetHeader>
@@ -141,16 +141,16 @@ const BookingItem = ({ booking }: BookingItemProps) => {
             className="rounded-xl object-cover"
           />
 
-          <Card className="z-10 mx-5 mb-3 w-full rounded-xl">
+          <Card className="z-10 mx-5 mb-3 flex-1 rounded-xl">
             <CardContent className="flex items-center gap-3 px-5 py-3">
               <Avatar>
                 <AvatarImage src={barbershop.imageUrl} alt={barbershop.name} />
               </Avatar>
 
-              <div>
-                <h3 className="font-bold">{barbershop.name}</h3>
+              <div className="min-w-0">
+                <h3 className="truncate font-bold">{barbershop.name}</h3>
 
-                <p className="text-xs text-muted-foreground">
+                <p className="truncate text-xs text-muted-foreground">
                   {barbershop.address}
                 </p>
               </div>
@@ -161,7 +161,7 @@ const BookingItem = ({ booking }: BookingItemProps) => {
         {/* Informações */}
         <div className="mt-6">
           <Badge
-            className="w-fit"
+            className="w-fit rounded-full px-3"
             variant={isConfirmed ? "default" : "secondary"}
           >
             {isConfirmed ? "Confirmado" : "Finalizado"}
@@ -187,7 +187,7 @@ const BookingItem = ({ booking }: BookingItemProps) => {
         <SheetFooter className="mt-6">
           <div className="flex w-full items-center gap-3">
             <SheetClose
-              render={<Button variant="outline" className="w-full" />}
+              render={<Button variant="outline" className="min-w-0 flex-1" />}
             >
               Voltar
             </SheetClose>
@@ -195,7 +195,9 @@ const BookingItem = ({ booking }: BookingItemProps) => {
             {isConfirmed && (
               <Dialog>
                 <DialogTrigger
-                  render={<Button variant="destructive" className="w-full" />}
+                  render={
+                    <Button variant="destructive" className="min-w-0 flex-1" />
+                  }
                 >
                   Cancelar Reserva
                 </DialogTrigger>
@@ -212,14 +214,19 @@ const BookingItem = ({ booking }: BookingItemProps) => {
 
                   <DialogFooter className="flex flex-row gap-3">
                     <DialogClose
-                      render={<Button variant="secondary" className="w-full" />}
+                      render={
+                        <Button
+                          variant="secondary"
+                          className="min-w-0 flex-1"
+                        />
+                      }
                     >
                       Voltar
                     </DialogClose>
 
                     <Button
                       variant="destructive"
-                      className="w-full"
+                      className="min-w-0 flex-1"
                       onClick={handleCancelBooking}
                     >
                       Confirmar
