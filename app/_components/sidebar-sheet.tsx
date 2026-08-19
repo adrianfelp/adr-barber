@@ -105,11 +105,15 @@ const SidebarSheet = ({ variant = "outline" }: SidebarSheetProps) => {
           </SheetClose>
 
           <SheetClose
-            render={<Button variant="ghost" className="justify-start gap-2" />}
+            render={
+              <Button variant="ghost" className="justify-start gap-2" asChild />
+            }
           >
             <Link href="/bookings" className="flex items-center gap-2">
-              <CalendarIcon size={18} />
-              Agendamentos
+              <Link href="/bookings">
+                <CalendarIcon size={18} />
+                Agendamentos
+              </Link>
             </Link>
           </SheetClose>
         </div>

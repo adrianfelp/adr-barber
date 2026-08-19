@@ -1,6 +1,8 @@
 import Image from "next/image"
 import Link from "next/link"
 
+import { auth } from "@/auth"
+
 import BarbershopItem from "@/app/_components/barbershop-item"
 import BookingItem from "@/app/_components/booking-item"
 import Header from "@/app/_components/header"
@@ -10,6 +12,8 @@ import { quickSearchOptions } from "@/app/_constants/search"
 import { db } from "@/app/_lib/prisma"
 
 const Home = async () => {
+  const session = await auth()
+
   const barbershops = await db.barbershop.findMany()
 
   const popularBarbershops = await db.barbershop.findMany({
@@ -18,6 +22,27 @@ const Home = async () => {
     },
   })
 
+  const confirmedBookings = session?.user?.id
+    ? await db.booking.findMany({
+        where: {
+          userId: session.user.id,
+          date: {
+            gte: new Date(),
+          },
+        },
+        include: {
+          service: {
+            include: {
+              barbershop: true,
+            },
+          },
+        },
+        orderBy: {
+          date: "asc",
+        },
+      })
+    : []
+
   return (
     <div>
       <Header />
@@ -25,7 +50,9 @@ const Home = async () => {
       <main className="p-5">
         {/* Saudação */}
         <section>
-          <h2 className="text-xl font-bold">Olá, Adrian!</h2>
+          <h2 className="text-xl font-bold">
+            Olá, {session?.user?.name?.split(" ")[0] ?? "visitante"}!
+          </h2>
 
           <p className="text-sm text-muted-foreground">
             Quinta-feira, 16 de julho.
@@ -69,7 +96,20 @@ const Home = async () => {
           />
         </div>
 
-        <BookingItem />
+        {/* Agendamentos */}
+        {confirmedBookings.length > 0 && (
+          <section>
+            <h2 className="mb-3 mt-6 text-xs font-bold uppercase text-gray-400">
+              Agendamentos
+            </h2>
+
+            <div className="flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden">
+              {confirmedBookings.map((booking) => (
+                <BookingItem key={booking.id} booking={booking} />
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Recomendados */}
         <section>
