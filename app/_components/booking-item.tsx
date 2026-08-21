@@ -80,11 +80,13 @@ const BookingItem = ({ booking }: BookingItemProps) => {
     <Sheet open={isSheetOpen} onOpenChange={handleSheetOpenChange}>
       {/* Card do agendamento */}
       <SheetTrigger
-        render={<Card className="w-full min-w-[90%] cursor-pointer" />}
+        render={
+          <Card className="w-full cursor-pointer rounded-xl transition-colors hover:bg-accent/30" />
+        }
       >
-        <CardContent className="flex justify-between p-0">
+        <CardContent className="flex min-h-[110px] justify-between p-0">
           {/* Esquerda */}
-          <div className="flex min-w-0 flex-col gap-2 py-5 pl-5">
+          <div className="flex min-w-0 flex-1 flex-col justify-center gap-2 px-5 py-4">
             <Badge
               className="w-fit rounded-full px-3"
               variant={isConfirmed ? "default" : "secondary"}
@@ -92,10 +94,10 @@ const BookingItem = ({ booking }: BookingItemProps) => {
               {isConfirmed ? "Confirmado" : "Finalizado"}
             </Badge>
 
-            <h3 className="font-semibold">{booking.service.name}</h3>
+            <h3 className="truncate font-semibold">{booking.service.name}</h3>
 
-            <div className="flex items-center gap-2">
-              <Avatar className="h-6 w-6">
+            <div className="flex min-w-0 items-center gap-2">
+              <Avatar className="h-6 w-6 shrink-0">
                 <AvatarImage src={barbershop.imageUrl} alt={barbershop.name} />
               </Avatar>
 
@@ -104,14 +106,14 @@ const BookingItem = ({ booking }: BookingItemProps) => {
           </div>
 
           {/* Direita */}
-          <div className="flex shrink-0 flex-col items-center justify-center border-l-2 px-5">
+          <div className="flex min-w-[90px] shrink-0 flex-col items-center justify-center border-l-2 px-4">
             <p className="text-sm capitalize">
               {format(booking.date, "MMMM", {
                 locale: ptBR,
               })}
             </p>
 
-            <p className="text-2xl">
+            <p className="text-2xl font-semibold">
               {format(booking.date, "dd", {
                 locale: ptBR,
               })}
@@ -127,13 +129,13 @@ const BookingItem = ({ booking }: BookingItemProps) => {
       </SheetTrigger>
 
       {/* Detalhes do agendamento */}
-      <SheetContent className="w-[85%] overflow-y-auto overflow-x-hidden">
+      <SheetContent className="w-[90%] overflow-y-auto overflow-x-hidden sm:max-w-md lg:max-w-lg">
         <SheetHeader>
           <SheetTitle className="text-left">Informações da Reserva</SheetTitle>
         </SheetHeader>
 
         {/* Mapa */}
-        <div className="relative mt-6 flex h-[180px] w-full items-end">
+        <div className="relative mt-6 flex h-[180px] w-full items-end lg:h-[220px]">
           <Image
             src="/map.png"
             alt={`Mapa da barbearia ${barbershop.name}`}
@@ -141,9 +143,9 @@ const BookingItem = ({ booking }: BookingItemProps) => {
             className="rounded-xl object-cover"
           />
 
-          <Card className="z-10 mx-5 mb-3 flex-1 rounded-xl">
+          <Card className="z-10 mx-5 mb-3 min-w-0 flex-1 rounded-xl">
             <CardContent className="flex items-center gap-3 px-5 py-3">
-              <Avatar>
+              <Avatar className="shrink-0">
                 <AvatarImage src={barbershop.imageUrl} alt={barbershop.name} />
               </Avatar>
 

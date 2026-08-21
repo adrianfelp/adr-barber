@@ -14,10 +14,10 @@ type Props = {
 
 const BarbershopItem = ({ barbershop }: Props) => {
   return (
-    <Card className="min-w-[167px] rounded-2xl">
+    <Card className="w-[167px] shrink-0 rounded-2xl lg:w-full">
       <CardContent className="p-1">
         {/* Imagem */}
-        <div className="relative h-[159px] w-full">
+        <div className="relative h-[159px] w-full lg:h-[190px]">
           <Image
             src={barbershop.imageUrl}
             alt={barbershop.name}
@@ -27,7 +27,7 @@ const BarbershopItem = ({ barbershop }: Props) => {
 
           <Badge
             variant="secondary"
-            className="absolute left-2 top-2 flex items-center gap-1"
+            className="absolute left-2 top-2 flex items-center gap-1 rounded-full"
           >
             <StarIcon size={12} className="fill-primary text-primary" />
 
@@ -43,7 +43,7 @@ const BarbershopItem = ({ barbershop }: Props) => {
             {barbershop.address}
           </p>
 
-          <Link href={`/barbershops/${barbershop.id}`}>
+          <Link href={`/barbershops/${barbershop.id}`} className="block">
             <Button variant="secondary" className="mt-3 w-full">
               Reservar
             </Button>

@@ -47,10 +47,10 @@ const Home = async () => {
     <div>
       <Header />
 
-      <main className="p-5">
+      <main className="mx-auto w-full max-w-7xl px-5 py-5 md:px-8 lg:px-10">
         {/* Saudação */}
         <section>
-          <h2 className="text-xl font-bold">
+          <h2 className="text-xl font-bold md:text-2xl">
             Olá, {session?.user?.name?.split(" ")[0] ?? "visitante"}!
           </h2>
 
@@ -65,11 +65,12 @@ const Home = async () => {
         </div>
 
         {/* Busca rápida */}
-        <div className="mt-6 flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden">
+        <div className="mt-6 flex gap-3 overflow-x-auto pb-1 [&::-webkit-scrollbar]:hidden">
           {quickSearchOptions.map((option) => (
             <Link
               key={option.title}
               href={`/barbershops?service=${encodeURIComponent(option.title)}`}
+              className="shrink-0"
             >
               <Button variant="secondary" className="gap-2">
                 <Image
@@ -85,57 +86,66 @@ const Home = async () => {
           ))}
         </div>
 
-        {/* Banner */}
-        <div className="relative mt-6 h-[150px] w-full overflow-hidden rounded-xl">
-          <Image
-            src="/banner-01.png"
-            alt="Agende nos melhores com ADR Barber"
-            fill
-            priority
-            className="object-cover"
-          />
-        </div>
+        {/* Conteúdo principal centralizado */}
+        <div className="mx-auto w-full max-w-[1050px]">
+          {/* Banner */}
+          <div className="mt-6 w-full">
+            <Image
+              src="/banner.png"
+              alt="Agende nos melhores com ADR Barber"
+              width={700}
+              height={300}
+              priority
+              className="h-auto w-full rounded-xl object-contain"
+            />
+          </div>
 
-        {/* Agendamentos */}
-        {confirmedBookings.length > 0 && (
+          {/* Agendamentos */}
+          {confirmedBookings.length > 0 && (
+            <section>
+              <h2 className="mb-3 mt-6 text-xs font-bold uppercase text-muted-foreground">
+                Agendamentos
+              </h2>
+
+              <div className="flex gap-4 overflow-x-auto pb-1 [&::-webkit-scrollbar]:hidden">
+                {confirmedBookings.map((booking) => (
+                  <div
+                    key={booking.id}
+                    className="w-[320px] shrink-0 sm:w-[360px] lg:w-[400px]"
+                  >
+                    <BookingItem booking={booking} />
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* Recomendados */}
           <section>
-            <h2 className="mb-3 mt-6 text-xs font-bold uppercase text-gray-400">
-              Agendamentos
+            <h2 className="mb-3 mt-8 text-xs font-bold uppercase text-muted-foreground">
+              Recomendados
             </h2>
 
-            <div className="flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden">
-              {confirmedBookings.map((booking) => (
-                <BookingItem key={booking.id} booking={booking} />
+            <div className="flex gap-4 overflow-x-auto pb-1 lg:grid lg:grid-cols-4 lg:gap-5 lg:overflow-visible xl:grid-cols-5 [&::-webkit-scrollbar]:hidden">
+              {barbershops.map((barbershop) => (
+                <BarbershopItem key={barbershop.id} barbershop={barbershop} />
               ))}
             </div>
           </section>
-        )}
 
-        {/* Recomendados */}
-        <section>
-          <h2 className="mb-3 mt-6 text-xs font-bold uppercase text-gray-400">
-            Recomendados
-          </h2>
+          {/* Populares */}
+          <section>
+            <h2 className="mb-3 mt-8 text-xs font-bold uppercase text-muted-foreground">
+              Populares
+            </h2>
 
-          <div className="flex gap-4 overflow-x-auto [&::-webkit-scrollbar]:hidden">
-            {barbershops.map((barbershop) => (
-              <BarbershopItem key={barbershop.id} barbershop={barbershop} />
-            ))}
-          </div>
-        </section>
-
-        {/* Populares */}
-        <section>
-          <h2 className="mb-3 mt-6 text-xs font-bold uppercase text-gray-400">
-            Populares
-          </h2>
-
-          <div className="flex gap-4 overflow-x-auto [&::-webkit-scrollbar]:hidden">
-            {popularBarbershops.map((barbershop) => (
-              <BarbershopItem key={barbershop.id} barbershop={barbershop} />
-            ))}
-          </div>
-        </section>
+            <div className="flex gap-4 overflow-x-auto pb-1 lg:grid lg:grid-cols-4 lg:gap-5 lg:overflow-visible xl:grid-cols-5 [&::-webkit-scrollbar]:hidden">
+              {popularBarbershops.map((barbershop) => (
+                <BarbershopItem key={barbershop.id} barbershop={barbershop} />
+              ))}
+            </div>
+          </section>
+        </div>
       </main>
     </div>
   )
