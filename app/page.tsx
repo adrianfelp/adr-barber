@@ -1,5 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
+import { format } from "date-fns"
+import { ptBR } from "date-fns/locale"
 
 import { auth } from "@/auth"
 
@@ -13,6 +15,12 @@ import { db } from "@/app/_lib/prisma"
 
 const Home = async () => {
   const session = await auth()
+
+  const currentDate = new Date()
+
+  const formattedDate = format(currentDate, "EEEE, d 'de' MMMM.", {
+    locale: ptBR,
+  })
 
   const barbershops = await db.barbershop.findMany()
 
@@ -54,8 +62,8 @@ const Home = async () => {
             Olá, {session?.user?.name?.split(" ")[0] ?? "visitante"}!
           </h2>
 
-          <p className="text-sm text-muted-foreground">
-            Quinta-feira, 16 de julho.
+          <p className="text-sm capitalize text-muted-foreground">
+            {formattedDate}
           </p>
         </section>
 
